@@ -11,10 +11,9 @@ export default function TopNav() {
     <header className="sticky top-0 z-40 border-b border-border/40 bg-background/95 backdrop-blur-sm">
       <div className="mx-auto max-w-7xl px-4 py-3 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center">
-            <span className="text-sm font-bold text-primary-foreground">B</span>
+          <div className="w-8 h-8 bg-gradient-to- br from-primary to-accent rounded-lg flex items-center justify-center"> 
           </div>
-          <span className="font-semibold tracking-tight text-lg text-foreground">BAMS</span>
+          <span className="font-semibold tracking-tight text-lg text-foreground">Barangay Appointment Management System</span>
         </Link>
 
         <nav className="flex items-center gap-6 text-sm">
@@ -52,6 +51,12 @@ export default function TopNav() {
                     to="/admin/registrations"
                   >
                     Registrations
+                  </Link>
+                  <Link
+                    className="text-muted-foreground hover:text-primary transition-colors font-medium"
+                    to="/admin/barangay-documents"
+                  >
+                    Barangay Documents
                   </Link>
                 </div>
               )}

@@ -10,20 +10,40 @@ require_once __DIR__ . '/../src/Controllers/DocumentFormatsController.php';
 require_once __DIR__ . '/../src/Controllers/UploadController.php';
 require_once __DIR__ . '/../src/Controllers/IssuedDocumentsController.php';
 
+// -----------------------------------------------------
+// CORS FIX (prevents "Failed to fetch")
+// -----------------------------------------------------
+header("Access-Control-Allow-Origin: http://localhost:5173");
+header("Access-Control-Allow-Credentials: true");
+header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
+header("Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS");
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(204);
+    exit;
+}
+
+// -----------------------------------------------------
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?? '/';
 
-// Adjust base if app is not at web root
+// Adjust base if app is not root
 $base = '/BAMS/bams-backend/public';
+
 if (!function_exists('str_starts_with')) {
     function str_starts_with(string $haystack, string $needle): bool {
         return $needle !== '' && strpos($haystack, $needle) === 0;
     }
 }
+
 if (str_starts_with($path, $base)) {
     $path = substr($path, strlen($base));
 }
 
+// -----------------------------------------------------
+// ROUTES
+// -----------------------------------------------------
 switch (true) {
+
     // Health check
     case $path === '/api/health':
         $ok = false;
@@ -37,10 +57,15 @@ switch (true) {
             'session' => session_id() !== '' ? 'ok' : 'missing',
         ], $ok ? 200 : 500);
         break;
-    // Auth
-    case $path === '/api/register':
-        AuthController::register();
+
+    // -------------------------------------------
+    // REGISTER (Updated to use UsersController)
+    // -------------------------------------------
+    case $path === '/api/register' && $_SERVER['REQUEST_METHOD'] === 'POST':
+        UsersController::register();
         break;
+
+    // Auth
     case $path === '/api/login':
         AuthController::login();
         break;
@@ -87,7 +112,7 @@ switch (true) {
         AppointmentController::delete((int)$m[1]);
         break;
 
-    // Document Formats (admin)
+    // Document formats
     case $path === '/api/document-formats' && $_SERVER['REQUEST_METHOD'] === 'GET':
         DocumentFormatsController::list();
         break;
@@ -104,12 +129,12 @@ switch (true) {
         DocumentFormatsController::delete((int)$m[1]);
         break;
 
-    // Uploads (admin)
+    // Uploads
     case $path === '/api/upload/image' && $_SERVER['REQUEST_METHOD'] === 'POST':
         UploadController::uploadImage();
         break;
 
-    // Issued Documents (admin)
+    // Issued Documents
     case $path === '/api/issued-documents' && $_SERVER['REQUEST_METHOD'] === 'POST':
         IssuedDocumentsController::create();
         break;
@@ -117,6 +142,7 @@ switch (true) {
         IssuedDocumentsController::get((int)$m[1]);
         break;
 
+    // 404 fallback
     default:
         json_response(['error' => 'Not Found', 'path' => $path], 404);
 }

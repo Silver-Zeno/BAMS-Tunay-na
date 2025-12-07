@@ -39,7 +39,7 @@ export default function Register() {
     reader.readAsDataURL(file)
   }
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault()
     if (!form.email || !form.password || !form.name || !form.address || !form.birthDate) {
       setError("Please fill in all required fields")
@@ -52,9 +52,35 @@ export default function Register() {
     setError("")
     setLoading(true)
 
-    const payload = { full_name: form.name, email: form.email, password: form.password, role: form.role }
+    try {
+      const payload = { 
+        full_name: form.name, 
+        email: form.email, 
+        password: form.password, 
+        role: form.role,
+        address: form.address,
+        birth_date: form.birthDate,
+        phone: form.phone || null,
+        barangay_id: form.barangayId || null,
+        id_photo_url: form.idPhotoDataUrl || null
+      }
 
-    setTimeout(() => {
+      // Make the API call to register the user
+      const response = await fetch('http://localhost:8000/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+        credentials: 'include'
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || 'Registration failed');
+      }
+
+      // On successful registration
       setSuccess({ name: form.name, email: form.email, role: form.role })
       setForm({
         name: "",
@@ -68,8 +94,12 @@ export default function Register() {
         role: "resident",
       })
       setPreview("")
-      setLoading(false)
-    }, 500)
+    } catch (err) {
+      setError(err.message || 'Registration failed. Please try again.');
+      console.error('Registration error:', err);
+    } finally {
+      setLoading(false);
+    }
   }
 
   if (success) {

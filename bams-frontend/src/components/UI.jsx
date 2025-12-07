@@ -50,6 +50,36 @@ export function Textarea({ className = '', ...props }) {
   return <textarea className={`w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 ${className}`} {...props} />
 }
 
+export function Table({ className = '', children }) {
+  return (
+    <div className="overflow-x-auto">
+      <table className={`min-w-full divide-y divide-gray-200 ${className}`}>
+        {children}
+      </table>
+    </div>
+  )
+}
+
+export function TableHead({ children }) {
+  return <thead className="bg-gray-50">{children}</thead>
+}
+
+export function TableBody({ children, className = '' }) {
+  return <tbody className={`bg-white divide-y divide-gray-200 ${className}`}>{children}</tbody>
+}
+
+export function TableRow({ children, className = '' }) {
+  return <tr className={className}>{children}</tr>
+}
+
+export function TableHeader({ children, className = '' }) {
+  return <th className={`px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider ${className}`}>{children}</th>
+}
+
+export function TableCell({ children, className = '' }) {
+  return <td className={`px-6 py-4 whitespace-nowrap text-sm text-gray-500 ${className}`}>{children}</td>
+}
+
 export function Badge({ status }) {
   const map = {
     pending: 'bg-yellow-100 text-yellow-800',

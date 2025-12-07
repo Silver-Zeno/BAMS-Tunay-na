@@ -15,11 +15,12 @@ import AttachmentViewer from "./pages/AttachmentViewer"
 import AdminDocuments from "./pages/AdminDocuments"
 import AdminDocumentEditor from "./pages/AdminDocumentEditor"
 import AdminIDCard from "./pages/AdminIDCard"
+import AdminBarangayDocuments from "./pages/AdminBarangayDocuments"
 import { CheckCircle2, Users, Clock, FileText } from "lucide-react"
 
 function Home() {
   return (
-    <div className="min-h-[calc(100vh-56px)] bg-gradient-to-b from-slate-50 via-white to-slate-50">
+    <div className="min-h-[calc(100vh-56px)] bg gradient-to-b from-slate-50 via-white to-slate-50">
       {/* Hero Section */}
       <section className="mx-auto max-w-7xl px-4 py-20 md:py-32">
         <div className="grid gap-12 md:grid-cols-2 md:items-center">
@@ -55,7 +56,7 @@ function Home() {
           <div className="grid gap-4">
             <div className="rounded-xl bg-white p-6 shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
               <div className="flex gap-4">
-                <div className="flex-shrink-0">
+                <div className="flex shrink-0">
                   <div className="flex items-center justify-center h-12 w-12 rounded-lg bg-blue-100">
                     <Users className="h-6 w-6 text-blue-600" />
                   </div>
@@ -71,7 +72,7 @@ function Home() {
 
             <div className="rounded-xl bg-white p-6 shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
               <div className="flex gap-4">
-                <div className="flex-shrink-0">
+                <div className="flex shrink-0">
                   <div className="flex items-center justify-center h-12 w-12 rounded-lg bg-emerald-100">
                     <CheckCircle2 className="h-6 w-6 text-emerald-600" />
                   </div>
@@ -87,7 +88,7 @@ function Home() {
 
             <div className="rounded-xl bg-white p-6 shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
               <div className="flex gap-4">
-                <div className="flex-shrink-0">
+                <div className="flex shrink-0">
                   <div className="flex items-center justify-center h-12 w-12 rounded-lg bg-purple-100">
                     <Clock className="h-6 w-6 text-purple-600" />
                   </div>
@@ -237,6 +238,14 @@ export default function App() {
           element={
             <ProtectedRoute role="admin">
               <AdminDocuments />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/barangay-documents"
+          element={
+            <ProtectedRoute role="admin">
+              <AdminBarangayDocuments />
             </ProtectedRoute>
           }
         />
